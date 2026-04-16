@@ -5,7 +5,11 @@ import { useItinerary } from "@/hooks/useItinerary";
 import { ProgressBar } from "@/components/ProgressBar";
 import { NextStopView } from "@/components/NextStopView";
 import { StopList } from "@/components/StopList";
-import { Map, List, Sparkles, Footprints } from "lucide-react";
+import { StopFormSheet } from "@/components/StopFormSheet";
+import { RemoveConfirm } from "@/components/RemoveConfirm";
+import { SmartSuggestionBanner } from "@/components/SmartSuggestionBanner";
+import { Stop } from "@/data/types";
+import { Map, List, Sparkles, Footprints, Plus } from "lucide-react";
 
 type Tab = "next" | "list";
 
@@ -13,10 +17,15 @@ const Index = () => {
   const [tab, setTab] = useState<Tab>("next");
   const itinerary = useItinerary(veniceDayPlan);
 
+  // Sheet state
+  const [addSheetOpen, setAddSheetOpen] = useState(false);
+  const [editingStop, setEditingStop] = useState<Stop | null>(null);
+  const [removingStop, setRemovingStop] = useState<Stop | null>(null);
+
   return (
     <div className="min-h-screen flex flex-col max-w-lg mx-auto">
       {/* Header */}
-      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border px-4 pt-4 pb-3 safe-top">
+      <header className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg border-b border-border px-4 pt-4 pb-3">
         <div className="flex items-center justify-between mb-3">
           <div>
             <h1 className="font-display font-black text-xl tracking-tight">
@@ -51,6 +60,12 @@ const Index = () => {
           </span>
         </div>
       </header>
+
+      {/* Smart suggestion banner */}
+      <SmartSuggestionBanner
+        suggestion={itinerary.suggestion}
+        onDismiss={itinerary.dismissSuggestion}
+      />
 
       {/* Tab bar */}
       <div className="flex gap-2 px-4 py-3">
@@ -109,7 +124,7 @@ const Index = () => {
               transition={{ duration: 0.2 }}
             >
               <StopList
-                stops={veniceDayPlan.stops}
+                stops={itinerary.stops}
                 currentIndex={itinerary.currentStopIndex}
                 completedStops={itinerary.completedStops}
                 kidMode={itinerary.kidMode}
@@ -117,11 +132,54 @@ const Index = () => {
                   itinerary.goToStop(i);
                   setTab("next");
                 }}
+                onEditStop={(stop) => setEditingStop(stop)}
+                onRemoveStop={(stop) => setRemovingStop(stop)}
+                onReorder={itinerary.reorderStops}
               />
             </motion.div>
           )}
         </AnimatePresence>
       </main>
+
+      {/* Floating Add button */}
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        onClick={() => setAddSheetOpen(true)}
+        className="fixed bottom-6 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xl"
+      >
+        <Plus className="h-7 w-7" />
+      </motion.button>
+
+      {/* Add Stop Sheet */}
+      <StopFormSheet
+        key="add-sheet"
+        open={addSheetOpen}
+        onClose={() => setAddSheetOpen(false)}
+        onSubmit={itinerary.addStop}
+      />
+
+      {/* Edit Stop Sheet */}
+      {editingStop && (
+        <StopFormSheet
+          key={`edit-${editingStop.id}`}
+          open={!!editingStop}
+          onClose={() => setEditingStop(null)}
+          onSubmit={() => {}}
+          editStop={editingStop}
+          onUpdate={itinerary.editStop}
+        />
+      )}
+
+      {/* Remove Confirm */}
+      <RemoveConfirm
+        open={!!removingStop}
+        stopName={removingStop?.name ?? ""}
+        onConfirm={() => {
+          if (removingStop) itinerary.removeStop(removingStop.id);
+          setRemovingStop(null);
+        }}
+        onCancel={() => setRemovingStop(null)}
+      />
     </div>
   );
 };
