@@ -1,80 +1,124 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   WanderDay — Shape Characters Design System
+   Bold, chunky, sticker-like, hand-drawn feel
+   ============================================ */
+
 @layer base {
   :root {
-    --background: 36 33% 97%;
-    --foreground: 20 25% 15%;
+    /* Core surface — warm peach-cream */
+    --background: 32 60% 90%;          /* #F5E6D3 */
+    --foreground: 240 22% 14%;         /* #1A1A2E */
 
-    --card: 0 0% 100%;
-    --card-foreground: 20 25% 15%;
+    --card: 36 55% 95%;
+    --card-foreground: 240 22% 14%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 25% 15%;
+    --popover: 36 55% 95%;
+    --popover-foreground: 240 22% 14%;
 
-    --primary: 16 65% 55%;
-    --primary-foreground: 0 0% 100%;
+    /* Brand */
+    --primary: 3 78% 60%;              /* #E8524A terracotta */
+    --primary-foreground: 36 60% 96%;
 
-    --secondary: 200 65% 48%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 264 30% 51%;          /* #7B5EA7 purple */
+    --secondary-foreground: 36 60% 96%;
 
-    --muted: 36 20% 92%;
-    --muted-foreground: 20 10% 50%;
+    --accent: 332 92% 56%;             /* #F72585 hot pink */
+    --accent-foreground: 36 60% 96%;
 
-    --accent: 340 60% 65%;
-    --accent-foreground: 0 0% 100%;
+    --muted: 32 35% 84%;
+    --muted-foreground: 240 12% 35%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 78% 55%;
+    --destructive-foreground: 36 60% 96%;
 
-    --border: 36 15% 88%;
-    --input: 36 15% 88%;
-    --ring: 16 65% 55%;
+    --border: 240 22% 14%;             /* #1A1A2E thick black outlines */
+    --input: 240 22% 14%;
+    --ring: 3 78% 60%;
 
-    --radius: 1rem;
+    --radius: 1.25rem;
 
-    --success: 145 50% 42%;
-    --success-foreground: 0 0% 100%;
+    /* Functional accents */
+    --success: 174 60% 55%;            /* #4ECDC4 teal */
+    --success-foreground: 240 22% 14%;
+    --warning: 42 100% 70%;            /* #FFD166 golden */
+    --warning-foreground: 240 22% 14%;
 
-    --warning: 42 90% 55%;
-    --warning-foreground: 20 25% 15%;
+    /* Category palette — each gets a shape */
+    --cat-food: 42 100% 60%;           /* food = circle, yellow-gold */
+    --cat-food-foreground: 240 22% 14%;
+    --cat-transport: 200 65% 50%;      /* transport = blob, blue */
+    --cat-transport-foreground: 36 60% 96%;
+    --cat-sight: 3 78% 60%;            /* sight = flower, terracotta */
+    --cat-sight-foreground: 36 60% 96%;
+    --cat-break: 174 60% 55%;          /* break = cloud, teal */
+    --cat-break-foreground: 240 22% 14%;
+    --cat-gelato: 332 92% 65%;         /* gelato = star, hot pink */
+    --cat-gelato-foreground: 36 60% 96%;
 
-    --gelato: 340 60% 65%;
-    --transport: 200 65% 48%;
-    --sight: 16 65% 55%;
-    --food: 42 90% 55%;
-    --rest: 145 50% 42%;
+    /* Sticker shadow — chunky offset, no blur */
+    --shadow-sticker: 3px 4px 0 0 hsl(var(--border));
+    --shadow-sticker-sm: 2px 3px 0 0 hsl(var(--border));
+    --shadow-sticker-lg: 4px 6px 0 0 hsl(var(--border));
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Sidebar (kept for shadcn compat) */
+    --sidebar-background: 36 55% 95%;
+    --sidebar-foreground: 240 22% 14%;
+    --sidebar-primary: 3 78% 60%;
+    --sidebar-primary-foreground: 36 60% 96%;
+    --sidebar-accent: 32 35% 84%;
+    --sidebar-accent-foreground: 240 22% 14%;
+    --sidebar-border: 240 22% 14%;
+    --sidebar-ring: 3 78% 60%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
+  * { @apply border-border; }
   body {
-    @apply bg-background text-foreground font-body antialiased;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-weight: 600;
   }
-
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display;
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  /* Sticker — thick black border + offset shadow, optional tilt */
+  .sticker {
+    @apply border-[2.5px] border-foreground;
+    box-shadow: var(--shadow-sticker);
+  }
+  .sticker-sm { box-shadow: var(--shadow-sticker-sm); @apply border-[2px] border-foreground; }
+  .sticker-lg { box-shadow: var(--shadow-sticker-lg); @apply border-[3px] border-foreground; }
+
+  .sticker-btn {
+    @apply sticker rounded-2xl font-bold transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none;
+    box-shadow: var(--shadow-sticker);
+  }
+  .sticker-btn:active { box-shadow: 0 0 0 0 hsl(var(--border)); }
+
+  .tilt-left { transform: rotate(-1.5deg); }
+  .tilt-right { transform: rotate(1.5deg); }
+
+  /* All-caps tracking label */
+  .label-caps {
+    @apply text-[10px] font-extrabold uppercase;
+    letter-spacing: 0.14em;
   }
 }
 
 @layer utilities {
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom, 1rem);
-  }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 1rem); }
+  .font-display { font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; }
+  .font-body    { font-family: 'Nunito', system-ui, sans-serif; font-weight: 600; }
 }
