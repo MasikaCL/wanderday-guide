@@ -14,7 +14,122 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      adventures: {
+        Row: {
+          city: string
+          cover_emoji: string
+          created_at: string
+          current_stop_index: number
+          date: string | null
+          id: string
+          kid_mode: boolean
+          name: string
+          shape_variant: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          city: string
+          cover_emoji?: string
+          created_at?: string
+          current_stop_index?: number
+          date?: string | null
+          id?: string
+          kid_mode?: boolean
+          name: string
+          shape_variant?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          city?: string
+          cover_emoji?: string
+          created_at?: string
+          current_stop_index?: number
+          date?: string | null
+          id?: string
+          kid_mode?: boolean
+          name?: string
+          shape_variant?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      stops: {
+        Row: {
+          address: string | null
+          adventure_id: string
+          category: string
+          completed: boolean
+          created_at: string
+          duration: number | null
+          emoji: string
+          google_maps_url: string | null
+          id: string
+          kid_description: string | null
+          lat: number | null
+          lng: number | null
+          name: string
+          notes: string | null
+          order_index: number
+          tags: string[]
+          updated_at: string
+          user_id: string
+          walking_time_to_next: number | null
+        }
+        Insert: {
+          address?: string | null
+          adventure_id: string
+          category: string
+          completed?: boolean
+          created_at?: string
+          duration?: number | null
+          emoji?: string
+          google_maps_url?: string | null
+          id?: string
+          kid_description?: string | null
+          lat?: number | null
+          lng?: number | null
+          name: string
+          notes?: string | null
+          order_index: number
+          tags?: string[]
+          updated_at?: string
+          user_id: string
+          walking_time_to_next?: number | null
+        }
+        Update: {
+          address?: string | null
+          adventure_id?: string
+          category?: string
+          completed?: boolean
+          created_at?: string
+          duration?: number | null
+          emoji?: string
+          google_maps_url?: string | null
+          id?: string
+          kid_description?: string | null
+          lat?: number | null
+          lng?: number | null
+          name?: string
+          notes?: string | null
+          order_index?: number
+          tags?: string[]
+          updated_at?: string
+          user_id?: string
+          walking_time_to_next?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stops_adventure_id_fkey"
+            columns: ["adventure_id"]
+            isOneToOne: false
+            referencedRelation: "adventures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
