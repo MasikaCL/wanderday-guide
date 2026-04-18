@@ -21,7 +21,6 @@ export function ShapeAvatar({ variant, size = 96, className = "" }: ShapeAvatarP
         alt=""
         aria-hidden
         className="w-full h-full object-contain"
-        style={{ filter: "drop-shadow(2px 3px 0 hsl(var(--border)))" }}
       />
     </div>
   );

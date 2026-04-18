@@ -36,16 +36,16 @@ export function StopList({
             initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.02 }}
             layout
-            className={`sticker rounded-3xl transition-all ${
-              isCurrent ? "bg-primary/20" : isCompleted ? "bg-card opacity-60" : "bg-card"
+            className={`sticker transition-all ${
+              isCurrent ? "bg-[#FFE8E8]" : isCompleted ? "bg-card opacity-60" : "bg-card"
             }`}
           >
             <button
               onClick={() => onSelectStop(i)}
               className="flex items-center gap-3 p-4 w-full text-left"
             >
-              <div className={`flex h-12 w-12 items-center justify-center rounded-full text-xl shrink-0 border-[2.5px] border-foreground ${
-                isCompleted ? "bg-success" : isCurrent ? "bg-primary text-primary-foreground" : "bg-background"
+              <div className={`flex h-12 w-12 items-center justify-center rounded-full text-xl shrink-0 ${
+                isCompleted ? "bg-[#E8FFF4]" : isCurrent ? "bg-primary text-primary-foreground" : "bg-secondary"
               }`}>
                 {isCompleted ? <Check className="h-5 w-5" /> : stop.emoji}
               </div>
@@ -58,13 +58,13 @@ export function StopList({
                 )}
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   <CategoryBadge category={stop.category} />
-                  {stop.duration ? <span className="text-[11px] font-extrabold text-foreground/60">~{stop.duration}min</span> : null}
-                  {stop.walkingTimeToNext ? <span className="text-[11px] font-extrabold text-foreground/60">→ {stop.walkingTimeToNext}min walk</span> : null}
+                  {stop.duration ? <span className="text-[11px] text-muted-foreground">~{stop.duration}min</span> : null}
+                  {stop.walkingTimeToNext ? <span className="text-[11px] text-muted-foreground">→ {stop.walkingTimeToNext}min walk</span> : null}
                 </div>
               </div>
               <button
                 onClick={(e) => { e.stopPropagation(); setExpandedId(isExpanded ? null : stop.id); }}
-                className="shrink-0 sticker-sm rounded-full p-2 bg-background"
+                className="shrink-0 rounded-full p-2 bg-secondary border-0"
               >
                 <GripVertical className="h-4 w-4" />
               </button>
@@ -73,19 +73,19 @@ export function StopList({
             {isExpanded && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
-                className="border-t-[2.5px] border-foreground px-4 py-3 flex items-center gap-2 flex-wrap"
+                className="px-4 py-3 flex items-center gap-2 flex-wrap"
               >
                 <button
                   disabled={i === 0}
                   onClick={(e) => { e.stopPropagation(); onReorder(i, i - 1); }}
-                  className="sticker-sm rounded-xl px-3 py-2 text-xs font-extrabold bg-background disabled:opacity-30 flex items-center gap-1"
+                  className="rounded-full px-3 py-2 text-xs font-medium bg-secondary disabled:opacity-30 flex items-center gap-1 border-0"
                 >
                   <ChevronUp className="h-3.5 w-3.5" /> Up
                 </button>
                 <button
                   disabled={i === stops.length - 1}
                   onClick={(e) => { e.stopPropagation(); onReorder(i, i + 1); }}
-                  className="sticker-sm rounded-xl px-3 py-2 text-xs font-extrabold bg-background disabled:opacity-30 flex items-center gap-1"
+                  className="rounded-full px-3 py-2 text-xs font-medium bg-secondary disabled:opacity-30 flex items-center gap-1 border-0"
                 >
                   <ChevronDown className="h-3.5 w-3.5" /> Down
                 </button>
@@ -95,7 +95,7 @@ export function StopList({
                 {hasLoc(stop) && (
                   <button
                     onClick={(e) => { e.stopPropagation(); setMapsStop(stop); }}
-                    className="sticker-sm rounded-xl px-3 py-2 text-xs font-extrabold bg-category-transport text-category-transport-foreground flex items-center gap-1"
+                    className="rounded-full px-3 py-2 text-xs font-medium bg-[#E8F4FF] text-[#7FA6CC] flex items-center gap-1 border-0"
                   >
                     <MapPin className="h-3.5 w-3.5" /> Maps
                   </button>
@@ -103,13 +103,13 @@ export function StopList({
 
                 <button
                   onClick={(e) => { e.stopPropagation(); setExpandedId(null); onEditStop(stop); }}
-                  className="sticker-sm rounded-xl px-3 py-2 text-xs font-extrabold bg-secondary text-secondary-foreground flex items-center gap-1"
+                  className="rounded-full px-3 py-2 text-xs font-medium bg-[#B8A9D9] text-foreground flex items-center gap-1 border-0"
                 >
                   <Pencil className="h-3.5 w-3.5" /> Edit
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); setExpandedId(null); onRemoveStop(stop); }}
-                  className="sticker-sm rounded-xl px-3 py-2 text-xs font-extrabold bg-destructive text-destructive-foreground flex items-center gap-1"
+                  className="rounded-full px-3 py-2 text-xs font-medium bg-destructive text-destructive-foreground flex items-center gap-1 border-0"
                 >
                   <Trash2 className="h-3.5 w-3.5" /> Remove
                 </button>

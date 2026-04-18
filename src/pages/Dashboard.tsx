@@ -8,6 +8,20 @@ import { ShapeAvatar } from "@/components/ShapeAvatar";
 import { CreateAdventureSheet } from "@/components/CreateAdventureSheet";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { ReactComponent as Char1 } from "../assets/characters/Frame_1.svg";
+import { ReactComponent as Char2 } from "../assets/characters/Frame_2.svg";
+import { ReactComponent as Char3 } from "../assets/characters/Frame_3.svg";
+import { ReactComponent as Char4 } from "../assets/characters/Frame_4.svg";
+import { ReactComponent as Char5 } from "../assets/characters/Frame_5.svg";
+import { ReactComponent as Char6 } from "../assets/characters/Frame_6.svg";
+import { ReactComponent as Char7 } from "../assets/characters/Frame_7.svg";
+import { ReactComponent as Char8 } from "../assets/characters/Frame_8.svg";
+import { ReactComponent as Char9 } from "../assets/characters/Frame_9.svg";
+import { ReactComponent as Char10 } from "../assets/characters/Frame_10.svg";
+import { ReactComponent as Char11 } from "../assets/characters/Frame_11.svg";
+import { ReactComponent as Char12 } from "../assets/characters/Frame_12.svg";
+
+const characters = [Char1, Char2, Char3, Char4, Char5, Char6, Char7, Char8, Char9, Char10, Char11, Char12];
 
 export default function Dashboard() {
   const navigate = useNavigate();
@@ -22,7 +36,7 @@ export default function Dashboard() {
 
   const handleCreate = async (input: { name: string; city: string; date: string; shapeVariant: "pink"|"green"|"yellow" }) => {
     await create(input);
-    toast("Adventure created! 🎉");
+    toast("Adventure created");
   };
 
   const handleSignOut = async () => {
@@ -46,71 +60,75 @@ export default function Dashboard() {
           <ShapeAvatar variant="pink" size={48} />
           <div>
             <h1 className="font-display text-2xl leading-none">WanderDay</h1>
-            <p className="text-xs font-bold text-foreground/60 mt-0.5">Your family adventures</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Your family adventures</p>
           </div>
         </div>
-        <button onClick={handleSignOut} className="sticker-sm rounded-full p-2.5 bg-card" title="Sign out">
+        <button onClick={handleSignOut} className="rounded-full p-2.5 bg-card shadow-sticker border-0" title="Sign out">
           <LogOut className="h-4 w-4" />
         </button>
       </header>
 
       {loading ? (
-        <p className="text-sm font-bold text-foreground/60 text-center mt-12">Loading…</p>
+        <p className="text-sm text-muted-foreground text-center mt-12">Loading…</p>
       ) : adventures.length === 0 ? (
-        <div className="sticker rounded-3xl bg-card p-8 text-center">
+        <div className="sticker p-8 text-center">
           <ShapeAvatar variant="yellow" size={88} className="mx-auto mb-3" />
           <h2 className="font-display text-lg mb-1">No adventures yet</h2>
-          <p className="text-sm font-bold text-foreground/60 mb-4">Tap "+ New Adventure" to start planning.</p>
+          <p className="text-sm text-muted-foreground mb-4">Tap "New adventure" to start planning.</p>
         </div>
       ) : (
         <div className="flex flex-col gap-4">
-          {adventures.map((a, i) => (
+          {adventures.map((a, i) => {
+            const Character = characters[i % characters.length];
+            return (
             <motion.div
               key={a.id}
               initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04 }}
-              className="sticker rounded-3xl bg-card p-4 flex items-center gap-4 relative"
+              className="sticker p-4 flex items-center gap-4 relative"
             >
-              <ShapeAvatar variant={a.shapeVariant} size={72} />
+              <div className="w-12 h-12 shrink-0">
+                <Character className="w-full h-full" />
+              </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-display text-lg leading-tight truncate">{a.name}</h3>
-                <p className="text-xs font-extrabold text-foreground/60 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {a.city}{a.date ? ` · ${new Date(a.date).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })}` : ""}
                 </p>
                 <button
                   onClick={() => navigate(`/adventure/${a.id}`)}
-                  className="mt-3 sticker-btn bg-primary text-primary-foreground px-4 py-2 text-xs"
+                  className="mt-3 rounded-full bg-primary text-primary-foreground px-4 py-2 text-xs border-0"
                 >
-                  Continue →
+                  Continue
                 </button>
               </div>
               <button
                 onClick={() => setMenuFor(menuFor === a.id ? null : a.id)}
-                className="absolute top-3 right-3 sticker-sm rounded-full p-1.5 bg-background"
+                className="absolute top-3 right-3 rounded-full p-1.5 bg-secondary border-0"
               >
                 <MoreHorizontal className="h-4 w-4" />
               </button>
               {menuFor === a.id && (
-                <div className="absolute top-12 right-3 z-10 sticker rounded-2xl bg-card p-2 flex flex-col gap-1 min-w-[140px]">
+                <div className="absolute top-12 right-3 z-10 rounded-[20px] bg-card shadow-sticker p-2 flex flex-col gap-1 min-w-[140px]">
                   <button
                     onClick={() => handleDelete(a.id, a.name)}
-                    className="flex items-center gap-2 px-3 py-2 text-xs font-extrabold text-destructive rounded-lg hover:bg-destructive/10"
+                    className="flex items-center gap-2 px-3 py-2 text-xs font-medium text-destructive rounded-full hover:bg-destructive/10"
                   >
                     <Trash2 className="h-3.5 w-3.5" /> Delete
                   </button>
                 </div>
               )}
             </motion.div>
-          ))}
+          )})}
         </div>
       )}
 
       <motion.button
         whileTap={{ scale: 0.96 }}
         onClick={() => setCreateOpen(true)}
-        className="fixed bottom-6 inset-x-4 max-w-lg mx-auto sticker-btn bg-accent text-accent-foreground py-4 flex items-center justify-center gap-2 text-base font-display tilt-right z-30"
+        className="fixed bottom-6 inset-x-4 max-w-lg mx-auto rounded-full bg-primary text-primary-foreground py-4 flex items-center justify-center gap-2 text-base font-display z-30 border-0"
       >
-        <Plus className="h-5 w-5" /> New Adventure
+        <Plus className="h-5 w-5" /> New adventure
       </motion.button>
 
       <CreateAdventureSheet open={createOpen} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />

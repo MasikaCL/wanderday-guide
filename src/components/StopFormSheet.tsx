@@ -62,7 +62,7 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
           <motion.div
             initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed inset-x-0 bottom-0 z-50 max-h-[92vh] overflow-y-auto rounded-t-3xl bg-card border-t-[2.5px] border-x-[2.5px] border-foreground safe-bottom"
+            className="fixed inset-x-0 bottom-0 z-50 max-h-[92vh] overflow-y-auto rounded-t-[20px] bg-card safe-bottom shadow-sticker"
           >
             <div className="flex justify-center pt-3 pb-1">
               <div className="h-1.5 w-12 rounded-full bg-foreground/30" />
@@ -71,9 +71,9 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
             <div className="px-5 pb-6">
               <div className="flex items-center justify-between mb-5">
                 <h2 className="font-display text-xl">
-                  {isEditing ? "✏️ Edit Stop" : "➕ Add Stop"}
+                  {isEditing ? "Edit stop" : "Add stop"}
                 </h2>
-                <button onClick={onClose} className="sticker rounded-full p-2 bg-background">
+                <button onClick={onClose} className="rounded-full p-2 bg-secondary border-0">
                   <X className="h-4 w-4" />
                 </button>
               </div>
@@ -84,7 +84,7 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="e.g. Ponte dei Sospiri"
-                  className="mt-1 w-full sticker bg-background px-4 py-3 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </label>
 
@@ -95,14 +95,14 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                     <button
                       key={opt.value}
                       onClick={() => setCategory(opt.value)}
-                      className={`sticker rounded-2xl py-3 px-1 flex flex-col items-center gap-1 transition-all ${
+                      className={`rounded-[20px] py-3 px-1 flex flex-col items-center gap-1 transition-all border-0 shadow-sticker ${
                         category === opt.value
                           ? "bg-primary text-primary-foreground"
-                          : "bg-background text-foreground"
+                          : "bg-secondary text-foreground"
                       }`}
                     >
                       <span className="text-xl">{opt.emoji}</span>
-                      <span className="text-[10px] font-extrabold">{opt.label}</span>
+                      <span className="text-[10px] font-medium">{opt.label}</span>
                     </button>
                   ))}
                 </div>
@@ -115,7 +115,7 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                   onChange={(e) => setDuration(e.target.value.replace(/\D/g, ""))}
                   placeholder="e.g. 30"
                   inputMode="numeric"
-                  className="mt-1 w-full sticker bg-background px-4 py-3 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </label>
 
@@ -126,26 +126,26 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                   onChange={(e) => setNotes(e.target.value)}
                   placeholder="Kid-friendly tips, avoid crowds, etc."
                   rows={2}
-                  className="mt-1 w-full sticker bg-background px-4 py-3 rounded-xl text-sm font-bold resize-none focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium resize-none border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
               </label>
 
               {/* Location */}
               <div className="mb-4">
-                <span className="label-caps text-foreground/70">📍 Location</span>
+                <span className="label-caps text-foreground/70">Location</span>
                 <input
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   placeholder="Address or place name"
-                  className="mt-1 w-full sticker bg-background px-4 py-3 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
                 />
                 <button
                   type="button"
                   onClick={pickOnMap}
                   disabled={!address.trim()}
-                  className="mt-2 sticker-btn bg-category-transport text-category-transport-foreground py-2.5 px-4 text-xs flex items-center gap-2 disabled:opacity-40"
+                  className="mt-2 rounded-full bg-[#E8F4FF] text-[#7FA6CC] py-2.5 px-4 text-xs flex items-center gap-2 disabled:opacity-40 border-0"
                 >
-                  <MapPin className="h-4 w-4" /> 📍 Pick on map
+                  <MapPin className="h-4 w-4" /> Pick on map
                 </button>
               </div>
 
@@ -156,10 +156,10 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                     <button
                       key={tag.value}
                       onClick={() => toggleTag(tag.value)}
-                      className={`sticker-sm rounded-full px-3 py-1.5 text-[11px] font-extrabold transition-all ${
+                      className={`rounded-full px-3 py-1.5 text-[11px] font-medium transition-all border-0 ${
                         tags.includes(tag.value)
-                          ? "bg-accent text-accent-foreground"
-                          : "bg-background text-foreground"
+                          ? "bg-[#F5A7C7] text-foreground"
+                          : "bg-secondary text-foreground"
                       }`}
                     >
                       {tag.emoji} {tag.label}
@@ -174,19 +174,19 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                   <div className="grid grid-cols-2 gap-2 mt-2">
                     <button
                       onClick={() => setPosition("after-current")}
-                      className={`sticker rounded-2xl py-3 text-xs font-extrabold ${
-                        position === "after-current" ? "bg-primary text-primary-foreground" : "bg-background"
+                      className={`rounded-full py-3 text-xs font-medium border-0 ${
+                        position === "after-current" ? "bg-primary text-primary-foreground" : "bg-secondary"
                       }`}
                     >
-                      📍 After current
+                      After current
                     </button>
                     <button
                       onClick={() => setPosition("end")}
-                      className={`sticker rounded-2xl py-3 text-xs font-extrabold ${
-                        position === "end" ? "bg-primary text-primary-foreground" : "bg-background"
+                      className={`rounded-full py-3 text-xs font-medium border-0 ${
+                        position === "end" ? "bg-primary text-primary-foreground" : "bg-secondary"
                       }`}
                     >
-                      📋 End of day
+                      End of day
                     </button>
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                 whileTap={{ scale: 0.97 }}
                 onClick={handleSubmit}
                 disabled={!name.trim()}
-                className="w-full sticker-btn bg-primary text-primary-foreground py-4 text-base font-display disabled:opacity-40 tilt-left"
+                className="w-full rounded-full bg-primary text-primary-foreground py-4 text-base font-display disabled:opacity-40 border-0"
               >
                 {isEditing ? "Save Changes" : "Add to Itinerary"}
               </motion.button>

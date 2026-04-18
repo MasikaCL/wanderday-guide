@@ -55,9 +55,9 @@ export default {
         sm: "calc(var(--radius) - 8px)",
       },
       boxShadow: {
-        sticker: "3px 4px 0 0 hsl(var(--border))",
-        "sticker-sm": "2px 3px 0 0 hsl(var(--border))",
-        "sticker-lg": "4px 6px 0 0 hsl(var(--border))",
+        sticker: "0 4px 20px rgba(0,0,0,0.06)",
+        "sticker-sm": "0 4px 20px rgba(0,0,0,0.06)",
+        "sticker-lg": "0 4px 20px rgba(0,0,0,0.06)",
       },
       keyframes: {
         "accordion-down": { from: { height: "0" }, to: { height: "var(--radix-accordion-content-height)" } },

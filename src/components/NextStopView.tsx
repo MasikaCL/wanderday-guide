@@ -25,19 +25,19 @@ export function NextStopView({
   return (
     <div className="flex flex-col gap-4 px-4 pb-4">
       {/* Current location */}
-      <div className="sticker rounded-3xl bg-card p-4 flex items-center gap-3">
-        <div className="flex h-14 w-14 items-center justify-center rounded-full text-2xl bg-success border-[2.5px] border-foreground shadow-sticker-sm">
+      <div className="sticker p-4 flex items-center gap-3">
+        <div className="flex h-14 w-14 items-center justify-center rounded-full text-2xl bg-[#F5A7C7]/40">
           {currentStop.emoji}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="label-caps text-primary">📍 You are here</p>
+          <p className="text-xs text-muted-foreground">You are here</p>
           <p className="font-display text-lg leading-tight truncate">{currentStop.name}</p>
           {currentStop.address && (
             <p className="text-xs text-muted-foreground truncate">{currentStop.address}</p>
           )}
           <div className="mt-1"><CategoryBadge category={currentStop.category} /></div>
         </div>
-        <span className="text-xs font-extrabold text-foreground/60">
+        <span className="text-xs text-muted-foreground">
           {currentIndex + 1}/{totalStops}
         </span>
       </div>
@@ -45,7 +45,7 @@ export function NextStopView({
       {hasLoc(currentStop) && (
         <button
           onClick={() => setMapsStop(currentStop)}
-          className="sticker-btn bg-card text-foreground py-2.5 px-4 text-xs flex items-center gap-2 self-start"
+          className="rounded-full bg-secondary text-foreground py-2.5 px-4 text-xs flex items-center gap-2 self-start border-0"
         >
           <MapPin className="h-4 w-4" /> Open in Maps
         </button>
@@ -56,13 +56,13 @@ export function NextStopView({
         <motion.div
           key={currentStop.id + "-desc"}
           initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}
-          className="sticker rounded-3xl bg-warning/40 p-4"
+          className="sticker bg-[#FFF3E8] p-4"
         >
-          <p className="text-sm leading-relaxed font-bold">
+          <p className="text-sm leading-relaxed">
             {kidMode ? currentStop.kidDescription || currentStop.notes : currentStop.notes}
           </p>
           {currentStop.duration ? (
-            <div className="flex items-center gap-1.5 mt-2 text-xs font-extrabold text-foreground/70">
+            <div className="flex items-center gap-1.5 mt-2 text-xs text-muted-foreground">
               <Clock className="h-3.5 w-3.5" />
               <span>Spend ~{currentStop.duration} min here</span>
             </div>
@@ -76,9 +76,9 @@ export function NextStopView({
           <motion.div
             key={nextStop.id + "-next"}
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
-            className="sticker rounded-3xl bg-secondary/15 p-4"
+            className="sticker bg-[#EDE8FF] p-4"
           >
-            <p className="label-caps text-secondary mb-1.5">👉 Next up</p>
+            <p className="text-xs text-muted-foreground mb-1.5">Next up</p>
             <div className="flex items-center gap-3">
               <span className="text-3xl">{nextStop.emoji}</span>
               <div className="flex-1 min-w-0">
@@ -90,7 +90,7 @@ export function NextStopView({
               </div>
             </div>
             {currentStop.walkingTimeToNext ? (
-              <div className="flex items-center gap-1.5 mt-3 text-sm text-secondary font-extrabold">
+              <div className="flex items-center gap-1.5 mt-3 text-sm text-[#9A8BC9]">
                 <Navigation className="h-4 w-4" />
                 <span>{currentStop.walkingTimeToNext} min walk</span>
               </div>
@@ -104,7 +104,7 @@ export function NextStopView({
         {!isLastStop && (
           <button
             onClick={onSkip}
-            className="sticker-btn bg-card text-foreground py-4 px-3 flex items-center justify-center gap-2 flex-1 text-sm"
+            className="py-4 px-3 flex items-center justify-center gap-2 flex-1 text-sm text-[#7FA6CC] bg-transparent border-0"
           >
             <SkipForward className="h-5 w-5" /> Skip
           </button>
@@ -112,12 +112,12 @@ export function NextStopView({
         <motion.button
           onClick={onArrive}
           whileTap={{ scale: 0.96 }}
-          className={`sticker-btn flex-[2] py-4 flex items-center justify-center gap-2 text-lg font-display tilt-left ${
-            isLastStop ? "bg-success text-success-foreground" : "bg-primary text-primary-foreground"
+          className={`rounded-full flex-[2] py-4 flex items-center justify-center gap-2 text-lg font-display border-0 ${
+            isLastStop ? "bg-[#7ECEC4] text-foreground" : "bg-primary text-primary-foreground"
           }`}
         >
           <Check className="h-6 w-6" />
-          {isLastStop ? "Finish Day! 🎉" : "I'm Here!"}
+          {isLastStop ? "Finish day" : "I'm here"}
         </motion.button>
       </div>
 
@@ -125,9 +125,9 @@ export function NextStopView({
       {nextStop && hasLoc(nextStop) && (
         <button
           onClick={() => setMapsStop(nextStop)}
-          className="sticker-btn bg-secondary text-secondary-foreground py-3.5 flex items-center justify-center gap-2 text-sm"
+          className="rounded-full bg-[#B8A9D9] text-foreground py-3.5 flex items-center justify-center gap-2 text-sm border-0"
         >
-          <MapPin className="h-5 w-5" /> Open Walking Directions
+          <MapPin className="h-5 w-5" /> Open walking directions
         </button>
       )}
 

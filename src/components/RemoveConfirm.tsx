@@ -20,25 +20,25 @@ export function RemoveConfirm({ open, stopName, onConfirm, onCancel }: RemoveCon
           />
           <motion.div
             initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-            className="fixed inset-x-6 top-1/3 z-50 sticker rounded-3xl bg-card p-6 mx-auto max-w-sm"
+            className="fixed inset-x-6 top-1/3 z-50 rounded-[20px] bg-card shadow-sticker p-6 mx-auto max-w-sm"
           >
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-destructive border-[2.5px] border-foreground">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFE8E8]">
                 <AlertTriangle className="h-5 w-5 text-destructive-foreground" />
               </div>
               <h3 className="font-display text-lg">Remove stop?</h3>
             </div>
-            <p className="text-sm font-bold text-foreground/70 mb-5">
+            <p className="text-sm text-muted-foreground mb-5">
               Remove <strong>{stopName}</strong>? Walking times will be recalculated.
             </p>
             <div className="flex gap-3">
-              <button onClick={onCancel} className="flex-1 sticker-btn bg-card py-3 text-sm">
+              <button onClick={onCancel} className="flex-1 rounded-full bg-secondary py-3 text-sm border-0">
                 Keep it
               </button>
               <motion.button
                 whileTap={{ scale: 0.95 }}
                 onClick={onConfirm}
-                className="flex-1 sticker-btn bg-destructive text-destructive-foreground py-3 text-sm"
+                className="flex-1 rounded-full bg-primary text-primary-foreground py-3 text-sm border-0"
               >
                 Remove
               </motion.button>

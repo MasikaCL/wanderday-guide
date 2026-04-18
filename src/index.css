@@ -1,124 +1,110 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   WanderDay — Shape Characters Design System
-   Bold, chunky, sticker-like, hand-drawn feel
-   ============================================ */
-
 @layer base {
   :root {
-    /* Core surface — warm peach-cream */
-    --background: 32 60% 90%;          /* #F5E6D3 */
-    --foreground: 240 22% 14%;         /* #1A1A2E */
+    --background: 30 45% 97%; /* #FAF7F2 */
+    --foreground: 261 12% 19%; /* #2E2A35 */
 
-    --card: 36 55% 95%;
-    --card-foreground: 240 22% 14%;
+    --card: 0 0% 100%;
+    --card-foreground: 261 12% 19%;
 
-    --popover: 36 55% 95%;
-    --popover-foreground: 240 22% 14%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 261 12% 19%;
 
-    /* Brand */
-    --primary: 3 78% 60%;              /* #E8524A terracotta */
-    --primary-foreground: 36 60% 96%;
+    --primary: 8 72% 67%; /* #E87C6F */
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 264 30% 51%;          /* #7B5EA7 purple */
-    --secondary-foreground: 36 60% 96%;
+    --secondary: 33 27% 91%; /* #F0EBE3 */
+    --secondary-foreground: 261 12% 19%;
 
-    --accent: 332 92% 56%;             /* #F72585 hot pink */
-    --accent-foreground: 36 60% 96%;
+    --accent: 261 35% 75%; /* #B8A9D9 */
+    --accent-foreground: 261 12% 19%;
 
-    --muted: 32 35% 84%;
-    --muted-foreground: 240 12% 35%;
+    --muted: 36 17% 92%;
+    --muted-foreground: 267 9% 62%; /* #9B95A3 */
 
     --destructive: 0 78% 55%;
-    --destructive-foreground: 36 60% 96%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 240 22% 14%;             /* #1A1A2E thick black outlines */
-    --input: 240 22% 14%;
+    --border: 33 17% 88%;
+    --input: 33 17% 88%;
     --ring: 3 78% 60%;
 
-    --radius: 1.25rem;
+    --radius: 1.25rem; /* 20px */
 
-    /* Functional accents */
-    --success: 174 60% 55%;            /* #4ECDC4 teal */
-    --success-foreground: 240 22% 14%;
-    --warning: 42 100% 70%;            /* #FFD166 golden */
-    --warning-foreground: 240 22% 14%;
+    --success: 173 47% 65%; /* #7ECEC4 */
+    --success-foreground: 261 12% 19%;
+    --warning: 44 87% 69%; /* #F5D06A */
+    --warning-foreground: 261 12% 19%;
 
-    /* Category palette — each gets a shape */
-    --cat-food: 42 100% 60%;           /* food = circle, yellow-gold */
-    --cat-food-foreground: 240 22% 14%;
-    --cat-transport: 200 65% 50%;      /* transport = blob, blue */
-    --cat-transport-foreground: 36 60% 96%;
-    --cat-sight: 3 78% 60%;            /* sight = flower, terracotta */
-    --cat-sight-foreground: 36 60% 96%;
-    --cat-break: 174 60% 55%;          /* break = cloud, teal */
-    --cat-break-foreground: 240 22% 14%;
-    --cat-gelato: 332 92% 65%;         /* gelato = star, hot pink */
-    --cat-gelato-foreground: 36 60% 96%;
+    --cat-food: 0 100% 95%; /* #FFE8E8 */
+    --cat-food-foreground: 0 45% 72%;
+    --cat-transport: 208 100% 95%; /* #E8F4FF */
+    --cat-transport-foreground: 208 55% 72%;
+    --cat-sight: 257 100% 95%; /* #EDE8FF */
+    --cat-sight-foreground: 257 40% 72%;
+    --cat-break: 152 100% 95%; /* #E8FFF4 */
+    --cat-break-foreground: 152 45% 72%;
+    --cat-gelato: 31 100% 95%; /* #FFF3E8 */
+    --cat-gelato-foreground: 31 50% 72%;
 
-    /* Sticker shadow — chunky offset, no blur */
-    --shadow-sticker: 3px 4px 0 0 hsl(var(--border));
-    --shadow-sticker-sm: 2px 3px 0 0 hsl(var(--border));
-    --shadow-sticker-lg: 4px 6px 0 0 hsl(var(--border));
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.06);
 
-    /* Sidebar (kept for shadcn compat) */
-    --sidebar-background: 36 55% 95%;
-    --sidebar-foreground: 240 22% 14%;
-    --sidebar-primary: 3 78% 60%;
-    --sidebar-primary-foreground: 36 60% 96%;
-    --sidebar-accent: 32 35% 84%;
-    --sidebar-accent-foreground: 240 22% 14%;
-    --sidebar-border: 240 22% 14%;
-    --sidebar-ring: 3 78% 60%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 261 12% 19%;
+    --sidebar-primary: 8 72% 67%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 33 27% 91%;
+    --sidebar-accent-foreground: 261 12% 19%;
+    --sidebar-border: 33 17% 88%;
+    --sidebar-ring: 8 72% 67%;
   }
 }
 
 @layer base {
-  * { @apply border-border; }
+  * {
+    @apply border-border;
+  }
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Nunito', system-ui, sans-serif;
-    font-weight: 600;
+    font-weight: 500;
+    line-height: 1.6;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Nunito', system-ui, sans-serif;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: -0.01em;
+    line-height: 1.3;
   }
 }
 
 @layer components {
-  /* Sticker — thick black border + offset shadow, optional tilt */
   .sticker {
-    @apply border-[2.5px] border-foreground;
-    box-shadow: var(--shadow-sticker);
+    @apply border-0 bg-card rounded-[20px];
+    box-shadow: var(--shadow-soft);
   }
-  .sticker-sm { box-shadow: var(--shadow-sticker-sm); @apply border-[2px] border-foreground; }
-  .sticker-lg { box-shadow: var(--shadow-sticker-lg); @apply border-[3px] border-foreground; }
+  .sticker-sm { @apply border-0 bg-card rounded-[20px]; box-shadow: var(--shadow-soft); }
+  .sticker-lg { @apply border-0 bg-card rounded-[20px]; box-shadow: var(--shadow-soft); }
 
   .sticker-btn {
-    @apply sticker rounded-2xl font-bold transition-all active:translate-x-[2px] active:translate-y-[2px] active:shadow-none;
-    box-shadow: var(--shadow-sticker);
+    @apply rounded-full border-0 font-medium transition-colors;
+    box-shadow: none;
   }
-  .sticker-btn:active { box-shadow: 0 0 0 0 hsl(var(--border)); }
+  .sticker-btn:active { box-shadow: none; }
 
-  .tilt-left { transform: rotate(-1.5deg); }
-  .tilt-right { transform: rotate(1.5deg); }
-
-  /* All-caps tracking label */
   .label-caps {
-    @apply text-[10px] font-extrabold uppercase;
-    letter-spacing: 0.14em;
+    @apply text-xs font-medium;
+    letter-spacing: 0;
   }
 }
 
 @layer utilities {
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 1rem); }
-  .font-display { font-family: 'Nunito', system-ui, sans-serif; font-weight: 800; }
-  .font-body    { font-family: 'Nunito', system-ui, sans-serif; font-weight: 600; }
+  .font-display { font-family: 'Nunito', system-ui, sans-serif; font-weight: 700; }
+  .font-body    { font-family: 'Nunito', system-ui, sans-serif; font-weight: 500; }
 }

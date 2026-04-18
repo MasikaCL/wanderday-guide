@@ -31,47 +31,47 @@ export default function Index() {
 
   if (authLoading || !user) return null;
   if (itinerary.loading || !itinerary.adventure) {
-    return <div className="min-h-screen flex items-center justify-center text-sm font-bold text-foreground/60">Loading adventure…</div>;
+    return <div className="min-h-screen flex items-center justify-center text-sm text-muted-foreground">Loading adventure…</div>;
   }
 
   const a = itinerary.adventure;
 
   return (
     <div className="min-h-screen flex flex-col max-w-lg mx-auto">
-      <header className="sticky top-0 z-20 bg-background/90 backdrop-blur-lg border-b-[2.5px] border-foreground px-4 pt-4 pb-3">
+      <header className="sticky top-0 z-20 bg-background/90 backdrop-blur-lg px-4 pt-4 pb-3">
         <div className="flex items-center justify-between mb-3 gap-2">
           <button
             onClick={() => navigate("/")}
-            className="sticker-sm rounded-full p-2 bg-card flex items-center gap-1.5 pr-3"
+            className="rounded-full p-2 bg-card shadow-sticker flex items-center gap-1.5 pr-3 border-0"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span className="text-xs font-extrabold">Back</span>
+            <span className="text-xs font-medium">Back</span>
           </button>
           <div className="flex items-center gap-2 flex-1 min-w-0 justify-center">
             <ShapeAvatar variant={a.shapeVariant} size={36} />
             <div className="min-w-0">
               <h1 className="font-display text-base leading-tight truncate">{a.name}</h1>
-              <p className="text-[10px] font-extrabold text-foreground/60 truncate">{a.city}</p>
+              <p className="text-[10px] text-muted-foreground truncate">{a.city}</p>
             </div>
           </div>
           <button
             onClick={() => itinerary.setKidMode(!itinerary.kidMode)}
-            className={`sticker-sm rounded-full px-3 py-1.5 flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-wider ${
-              itinerary.kidMode ? "bg-accent text-accent-foreground" : "bg-card"
+            className={`rounded-full px-3 py-1.5 flex items-center gap-1 text-[10px] font-medium border-0 ${
+              itinerary.kidMode ? "bg-[#F5A7C7] text-foreground" : "bg-secondary text-foreground"
             }`}
           >
-            <Sparkles className="h-3 w-3" /> Kid
+            <Sparkles className="h-3 w-3" /> Kid mode
           </button>
         </div>
 
         <ProgressBar progress={itinerary.progress} />
 
         <div className="flex items-center justify-between mt-2">
-          <span className="text-[11px] font-extrabold text-foreground/60">
+          <span className="text-[11px] text-muted-foreground">
             <Footprints className="inline h-3.5 w-3.5 mr-1" />
             {itinerary.remainingWalkingTime} min left
           </span>
-          <span className="text-[11px] font-extrabold text-foreground/60">
+          <span className="text-[11px] text-muted-foreground">
             {itinerary.currentStopIndex + 1} of {itinerary.totalStops}
           </span>
         </div>
@@ -82,19 +82,19 @@ export default function Index() {
       <div className="flex gap-2 px-4 py-3">
         <button
           onClick={() => setTab("next")}
-          className={`flex-1 sticker rounded-2xl py-2.5 flex items-center justify-center gap-2 text-sm font-extrabold ${
-            tab === "next" ? "bg-primary text-primary-foreground" : "bg-card"
+          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-2 text-sm font-medium border-0 ${
+            tab === "next" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
           }`}
         >
-          <Map className="h-4 w-4" /> Next Stop
+          <Map className="h-4 w-4" /> Next stop
         </button>
         <button
           onClick={() => setTab("list")}
-          className={`flex-1 sticker rounded-2xl py-2.5 flex items-center justify-center gap-2 text-sm font-extrabold ${
-            tab === "list" ? "bg-primary text-primary-foreground" : "bg-card"
+          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-2 text-sm font-medium border-0 ${
+            tab === "list" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
           }`}
         >
-          <List className="h-4 w-4" /> All Stops
+          <List className="h-4 w-4" /> All stops
         </button>
       </div>
 
@@ -137,7 +137,7 @@ export default function Index() {
       <motion.button
         whileTap={{ scale: 0.9 }}
         onClick={() => setAddSheetOpen(true)}
-        className="fixed bottom-6 right-6 z-30 sticker-btn bg-accent text-accent-foreground h-14 w-14 rounded-full flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-30 bg-primary text-primary-foreground h-14 w-14 rounded-full flex items-center justify-center border-0"
       >
         <Plus className="h-7 w-7" />
       </motion.button>

@@ -32,7 +32,7 @@ export default function Auth() {
           options: { emailRedirectTo: `${window.location.origin}/` },
         });
         if (error) throw error;
-        toast("Account created! Welcome to WanderDay 🎉");
+        toast("Account created. Welcome to WanderDay.");
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
@@ -53,13 +53,13 @@ export default function Auth() {
         <ShapeAvatar variant="green" size={60} className="-ml-4" />
       </div>
       <h1 className="font-display text-4xl text-center mt-2">WanderDay</h1>
-      <p className="text-sm font-bold text-foreground/70 text-center mt-1 mb-8">
+      <p className="text-sm text-muted-foreground text-center mt-1 mb-8">
         Your family adventures, one stop at a time.
       </p>
 
-      <form onSubmit={submit} className="w-full sticker rounded-3xl bg-card p-6 flex flex-col gap-4">
+      <form onSubmit={submit} className="w-full sticker p-6 flex flex-col gap-4">
         <h2 className="font-display text-xl">
-          {mode === "signin" ? "👋 Welcome back" : "🎒 Start your adventure"}
+          {mode === "signin" ? "Welcome back" : "Start your adventure"}
         </h2>
 
         <label className="block">
@@ -67,7 +67,7 @@ export default function Auth() {
           <input
             type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
-            className="mt-1 w-full sticker bg-background px-4 py-3 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary"
+            className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
         </label>
 
@@ -76,7 +76,7 @@ export default function Auth() {
           <input
             type="password" required minLength={6} value={password} onChange={(e) => setPassword(e.target.value)}
             placeholder="At least 6 characters"
-            className="mt-1 w-full sticker bg-background px-4 py-3 rounded-xl text-sm font-bold focus:outline-none focus:ring-2 focus:ring-primary"
+            className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
         </label>
 
@@ -84,7 +84,7 @@ export default function Auth() {
           whileTap={{ scale: 0.97 }}
           disabled={busy}
           type="submit"
-          className="sticker-btn bg-primary text-primary-foreground py-4 text-base font-display tilt-left disabled:opacity-50"
+          className="rounded-full bg-primary text-primary-foreground py-4 text-base font-display disabled:opacity-50 border-0"
         >
           {busy ? "..." : mode === "signin" ? "Sign In" : "Create Account"}
         </motion.button>
@@ -92,9 +92,9 @@ export default function Auth() {
         <button
           type="button"
           onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-          className="text-xs font-extrabold text-secondary underline-offset-2 hover:underline"
+          className="text-xs font-medium text-[#9A8BC9] underline-offset-2 hover:underline"
         >
-          {mode === "signin" ? "No account? Sign up →" : "Already have an account? Sign in →"}
+          {mode === "signin" ? "No account? Sign up" : "Already have an account? Sign in"}
         </button>
       </form>
     </div>
