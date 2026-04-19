@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ShapeAvatar } from "@/components/ShapeAvatar";
+
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -47,11 +47,6 @@ export default function Auth() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 py-10 max-w-md mx-auto">
-      <div className="flex items-center gap-3 mb-2">
-        <ShapeAvatar variant="pink" size={64} />
-        <ShapeAvatar variant="yellow" size={56} className="-ml-4 mt-3" />
-        <ShapeAvatar variant="green" size={60} className="-ml-4" />
-      </div>
       <h1 className="font-display text-4xl text-center mt-2">WanderDay</h1>
       <p className="text-sm text-muted-foreground text-center mt-1 mb-8">
         Your family adventures, one stop at a time.

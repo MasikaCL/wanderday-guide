@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Plus, LogOut, MoreHorizontal, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdventures, useAuthSession } from "@/hooks/useAdventures";
-import { ShapeAvatar } from "@/components/ShapeAvatar";
+
 import { CreateAdventureSheet } from "@/components/CreateAdventureSheet";
 import { toast } from "sonner";
 import { useEffect } from "react";
@@ -56,12 +56,9 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen max-w-lg mx-auto px-4 pt-6 pb-24">
       <header className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <ShapeAvatar variant="pink" size={48} />
-          <div>
-            <h1 className="font-display text-2xl leading-none">WanderDay</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">Your family adventures</p>
-          </div>
+        <div>
+          <h1 className="font-display text-2xl leading-none">WanderDay</h1>
+          <p className="text-xs text-muted-foreground mt-0.5">Your family adventures</p>
         </div>
         <button onClick={handleSignOut} className="rounded-full p-2.5 bg-card shadow-sticker border-0" title="Sign out">
           <LogOut className="h-4 w-4" />
@@ -72,7 +69,6 @@ export default function Dashboard() {
         <p className="text-sm text-muted-foreground text-center mt-12">Loading…</p>
       ) : adventures.length === 0 ? (
         <div className="sticker p-8 text-center">
-          <ShapeAvatar variant="yellow" size={88} className="mx-auto mb-3" />
           <h2 className="font-display text-lg mb-1">No adventures yet</h2>
           <p className="text-sm text-muted-foreground mb-4">Tap "New adventure" to start planning.</p>
         </div>
