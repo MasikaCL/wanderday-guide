@@ -8,18 +8,18 @@ import { ShapeAvatar } from "@/components/ShapeAvatar";
 import { CreateAdventureSheet } from "@/components/CreateAdventureSheet";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import Char1 from "../assets/characters/Frame_1.svg";
-import Char2 from "../assets/characters/Frame_2.svg";
-import Char3 from "../assets/characters/Frame_3.svg";
-import Char4 from "../assets/characters/Frame_4.svg";
-import Char5 from "../assets/characters/Frame_5.svg";
-import Char6 from "../assets/characters/Frame_6.svg";
-import Char7 from "../assets/characters/Frame_7.svg";
-import Char8 from "../assets/characters/Frame_8.svg";
-import Char9 from "../assets/characters/Frame_9.svg";
-import Char10 from "../assets/characters/Frame_10.svg";
-import Char11 from "../assets/characters/Frame_11.svg";
-import Char12 from "../assets/characters/Frame_12.svg";
+import Char1 from "../assets/characters/Frame_1.svg?react";
+import Char2 from "../assets/characters/Frame_2.svg?react";
+import Char3 from "../assets/characters/Frame_3.svg?react";
+import Char4 from "../assets/characters/Frame_4.svg?react";
+import Char5 from "../assets/characters/Frame_5.svg?react";
+import Char6 from "../assets/characters/Frame_6.svg?react";
+import Char7 from "../assets/characters/Frame_7.svg?react";
+import Char8 from "../assets/characters/Frame_8.svg?react";
+import Char9 from "../assets/characters/Frame_9.svg?react";
+import Char10 from "../assets/characters/Frame_10.svg?react";
+import Char11 from "../assets/characters/Frame_11.svg?react";
+import Char12 from "../assets/characters/Frame_12.svg?react";
 
 const characters = [Char1, Char2, Char3, Char4, Char5, Char6, Char7, Char8, Char9, Char10, Char11, Char12];
 
@@ -88,7 +88,7 @@ export default function Dashboard() {
               className="sticker p-4 flex items-center gap-4 relative"
             >
               <div className="w-12 h-12 shrink-0">
-                <img src={Character} alt="" className="w-full h-full" />
+                <Character className="w-full h-full" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="font-display text-lg leading-tight truncate">{a.name}</h3>
