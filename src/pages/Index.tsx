@@ -49,8 +49,7 @@ export default function Index() {
             <span className="text-xs font-medium">Back</span>
           </button>
           <div className="flex items-center gap-2 flex-1 min-w-0 justify-center">
-            <ShapeAvatar variant={a.shapeVariant} size={36} />
-            <div className="min-w-0">
+            <div className="min-w-0 text-center">
               <h1 className="font-display text-base leading-tight truncate">{a.name}</h1>
               <p className="text-[10px] text-muted-foreground truncate">{a.city}</p>
             </div>
