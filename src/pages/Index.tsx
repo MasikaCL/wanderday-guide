@@ -11,7 +11,7 @@ import { StopList } from "@/components/StopList";
 import { StopFormSheet } from "@/components/StopFormSheet";
 import { RemoveConfirm } from "@/components/RemoveConfirm";
 import { SmartSuggestionBanner } from "@/components/SmartSuggestionBanner";
-import { ShapeAvatar } from "@/components/ShapeAvatar";
+
 import { Stop } from "@/data/types";
 
 type Tab = "next" | "list" | "map";

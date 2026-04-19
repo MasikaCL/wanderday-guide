@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
-import { SHAPE_VARIANTS } from "@/data/types";
-import { ShapeAvatar } from "./ShapeAvatar";
 
 interface Props {
   open: boolean;
@@ -70,20 +68,6 @@ export function CreateAdventureSheet({ open, onClose, onCreate }: Props) {
                   className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40" />
               </label>
 
-              <div className="mb-5">
-                <span className="label-caps text-foreground/70">Pick a shape character</span>
-                <div className="grid grid-cols-3 gap-3 mt-2">
-                  {SHAPE_VARIANTS.map((v) => (
-                    <button key={v} onClick={() => setShape(v)}
-                      className={`rounded-[20px] p-3 flex items-center justify-center transition-all border-0 shadow-sticker ${
-                        shape === v ? "bg-[#FFE8E8]" : "bg-secondary"
-                      }`}
-                    >
-                      <ShapeAvatar variant={v} size={64} />
-                    </button>
-                  ))}
-                </div>
-              </div>
 
               <motion.button
                 whileTap={{ scale: 0.97 }}
