@@ -15,13 +15,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    svgr({
-      include: "src/assets/characters/*.svg",
-      svgrOptions: {
-        exportType: "named",
-        namedExport: "ReactComponent",
-      },
-    }),
+    svgr(),
     mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
