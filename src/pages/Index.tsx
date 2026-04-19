@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Map, List, Sparkles, Footprints, Plus } from "lucide-react";
+import { ArrowLeft, Map, List, Sparkles, Footprints, Plus, MapPin } from "lucide-react";
+import { RouteMap } from "@/components/RouteMap";
 import { useAuthSession } from "@/hooks/useAdventures";
 import { useAdventure } from "@/hooks/useAdventure";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -13,7 +14,7 @@ import { SmartSuggestionBanner } from "@/components/SmartSuggestionBanner";
 import { ShapeAvatar } from "@/components/ShapeAvatar";
 import { Stop } from "@/data/types";
 
-type Tab = "next" | "list";
+type Tab = "next" | "list" | "map";
 
 export default function Index() {
   const { id } = useParams<{ id: string }>();
@@ -82,19 +83,27 @@ export default function Index() {
       <div className="flex gap-2 px-4 py-3">
         <button
           onClick={() => setTab("next")}
-          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-2 text-sm font-medium border-0 ${
+          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-medium border-0 ${
             tab === "next" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
           }`}
         >
-          <Map className="h-4 w-4" /> Next stop
+          <Map className="h-4 w-4" /> Next
         </button>
         <button
           onClick={() => setTab("list")}
-          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-2 text-sm font-medium border-0 ${
+          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-medium border-0 ${
             tab === "list" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
           }`}
         >
-          <List className="h-4 w-4" /> All stops
+          <List className="h-4 w-4" /> Stops
+        </button>
+        <button
+          onClick={() => setTab("map")}
+          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-medium border-0 ${
+            tab === "map" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
+          }`}
+        >
+          <MapPin className="h-4 w-4" /> Map
         </button>
       </div>
 
@@ -114,6 +123,12 @@ export default function Index() {
                 currentIndex={itinerary.currentStopIndex}
                 totalStops={itinerary.totalStops}
               />
+            </motion.div>
+          ) : tab === "map" ? (
+            <motion.div key="map"
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}>
+              <RouteMap stops={itinerary.stops} currentIndex={itinerary.currentStopIndex} />
             </motion.div>
           ) : (
             <motion.div key="list"
