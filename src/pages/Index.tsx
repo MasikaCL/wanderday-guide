@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Map, List, Footprints, Plus, MapPin } from "lucide-react";
-import { RouteMap } from "@/components/RouteMap";
+import { ArrowLeft, Map, List, Footprints, Plus } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAdventures";
 import { useAdventure } from "@/hooks/useAdventure";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -14,7 +13,7 @@ import { SmartSuggestionBanner } from "@/components/SmartSuggestionBanner";
 
 import { Stop } from "@/data/types";
 
-type Tab = "next" | "list" | "map";
+type Tab = "next" | "list";
 
 export default function Index() {
   const { id } = useParams<{ id: string }>();
@@ -89,14 +88,6 @@ export default function Index() {
         >
           <List className="h-4 w-4" /> Stops
         </button>
-        <button
-          onClick={() => setTab("map")}
-          className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-medium border-0 ${
-            tab === "map" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
-          }`}
-        >
-          <MapPin className="h-4 w-4" /> Map
-        </button>
       </div>
 
       <main className="flex-1 overflow-y-auto">
@@ -114,13 +105,9 @@ export default function Index() {
                 onSkip={itinerary.skip}
                 currentIndex={itinerary.currentStopIndex}
                 totalStops={itinerary.totalStops}
+                onEditStop={(stop) => setEditingStop(stop)}
+                onUpdateStop={itinerary.editStop}
               />
-            </motion.div>
-          ) : tab === "map" ? (
-            <motion.div key="map"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}>
-              <RouteMap stops={itinerary.stops} currentIndex={itinerary.currentStopIndex} />
             </motion.div>
           ) : (
             <motion.div key="list"

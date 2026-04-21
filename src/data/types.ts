@@ -48,6 +48,9 @@ export interface Stop {
   googleMapsUrl?: string;
   tags?: StopTag[];
   emoji: string;
+  startTime?: string;
+  facts?: string[];
+  spotIt?: string;
 }
 
 export interface Adventure {

@@ -65,6 +65,7 @@ export type Database = {
           created_at: string
           duration: number | null
           emoji: string
+          facts: string[]
           google_maps_url: string | null
           id: string
           kid_description: string | null
@@ -73,6 +74,8 @@ export type Database = {
           name: string
           notes: string | null
           order_index: number
+          spot_it: string | null
+          start_time: string | null
           tags: string[]
           updated_at: string
           user_id: string
@@ -86,6 +89,7 @@ export type Database = {
           created_at?: string
           duration?: number | null
           emoji?: string
+          facts?: string[]
           google_maps_url?: string | null
           id?: string
           kid_description?: string | null
@@ -94,6 +98,8 @@ export type Database = {
           name: string
           notes?: string | null
           order_index: number
+          spot_it?: string | null
+          start_time?: string | null
           tags?: string[]
           updated_at?: string
           user_id: string
@@ -107,6 +113,7 @@ export type Database = {
           created_at?: string
           duration?: number | null
           emoji?: string
+          facts?: string[]
           google_maps_url?: string | null
           id?: string
           kid_description?: string | null
@@ -115,6 +122,8 @@ export type Database = {
           name?: string
           notes?: string | null
           order_index?: number
+          spot_it?: string | null
+          start_time?: string | null
           tags?: string[]
           updated_at?: string
           user_id?: string

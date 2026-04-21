@@ -101,6 +101,9 @@ export function useAdventure(adventureId: string | undefined) {
       address: newStop.address ?? null, lat: newStop.lat ?? null, lng: newStop.lng ?? null,
       google_maps_url: newStop.googleMapsUrl ?? null,
       tags: newStop.tags ?? [], emoji: newStop.emoji,
+      start_time: newStop.startTime ?? null,
+      facts: newStop.facts ?? [],
+      spot_it: newStop.spotIt ?? null,
     });
     await recalcWalkingTimes(adventureId);
     await refresh();
@@ -122,6 +125,9 @@ export function useAdventure(adventureId: string | undefined) {
       ...(updates.googleMapsUrl !== undefined && { google_maps_url: updates.googleMapsUrl ?? null }),
       ...(updates.tags !== undefined && { tags: updates.tags ?? [] }),
       ...(updates.emoji !== undefined && { emoji: updates.emoji }),
+      ...(updates.startTime !== undefined && { start_time: updates.startTime ?? null }),
+      ...(updates.facts !== undefined && { facts: updates.facts ?? [] }),
+      ...(updates.spotIt !== undefined && { spot_it: updates.spotIt ?? null }),
     }).eq("id", id);
     await refresh();
   }, [refresh]);

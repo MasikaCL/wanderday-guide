@@ -17,6 +17,9 @@ type StopRow = {
   address: string | null; lat: number | null; lng: number | null;
   google_maps_url: string | null;
   tags: string[]; emoji: string; completed: boolean;
+  start_time?: string | null;
+  facts?: string[] | null;
+  spot_it?: string | null;
 };
 
 const advFromRow = (r: AdvRow): Adventure => ({
@@ -35,6 +38,9 @@ export const stopFromRow = (r: StopRow): Stop => ({
   googleMapsUrl: r.google_maps_url ?? undefined,
   tags: r.tags as StopTag[],
   emoji: r.emoji,
+  startTime: r.start_time ?? undefined,
+  facts: r.facts ?? undefined,
+  spotIt: r.spot_it ?? undefined,
 });
 
 export function useAuthSession() {

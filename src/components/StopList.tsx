@@ -60,6 +60,11 @@ export function StopList({
                   <CategoryBadge category={stop.category} />
                   {stop.duration ? <span className="text-[11px] text-muted-foreground">~{stop.duration}min</span> : null}
                   {stop.walkingTimeToNext ? <span className="text-[11px] text-muted-foreground">→ {stop.walkingTimeToNext}min walk</span> : null}
+                  {stop.startTime ? (
+                    <span className="text-[11px] text-muted-foreground">
+                      {stop.startTime}{stop.duration ? ` · ~${stop.duration}min` : ""}
+                    </span>
+                  ) : null}
                 </div>
               </div>
               <button

@@ -108,3 +108,11 @@
   .font-display { font-family: 'Nunito', system-ui, sans-serif; font-weight: 700; }
   .font-body    { font-family: 'Nunito', system-ui, sans-serif; font-weight: 500; }
 }
+
+@layer utilities {
+  .skeleton-pulse { animation: skeletonPulse 1.2s ease-in-out infinite; }
+  @keyframes skeletonPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+}

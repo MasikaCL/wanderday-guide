@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Stop } from "@/data/types";
 import { CategoryBadge } from "./CategoryBadge";
 import { OpenInMapsSheet } from "./OpenInMapsSheet";
-import { MapPin, Navigation, Clock, SkipForward, Check } from "lucide-react";
+import { MapPin, Navigation, Clock, SkipForward, Check, Pencil, RotateCw, Sparkles, Timer } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface NextStopViewProps {
   currentStop: Stop;
@@ -14,13 +15,47 @@ interface NextStopViewProps {
   onSkip: () => void;
   currentIndex: number;
   totalStops: number;
+  onEditStop: (stop: Stop) => void;
+  onUpdateStop: (id: string, updates: Partial<Stop>) => Promise<void> | void;
 }
 
 export function NextStopView({
   currentStop, nextStop, kidMode, isLastStop, onArrive, onSkip, currentIndex, totalStops,
+  onEditStop, onUpdateStop,
 }: NextStopViewProps) {
   const [mapsStop, setMapsStop] = useState<Stop | null>(null);
+  const [generating, setGenerating] = useState(false);
   const hasLoc = (s: Stop | null) => !!s && (!!s.address || (s.lat != null && s.lng != null));
+  const isSight = currentStop.category === "sight";
+  const hasFacts = !!(currentStop.facts && currentStop.facts.length > 0);
+
+  const generate = useCallback(async () => {
+    if (generating) return;
+    setGenerating(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("generate-sights-info", {
+        body: { name: currentStop.name, location: currentStop.address ?? "" },
+      });
+      if (error) throw error;
+      const facts = Array.isArray(data?.facts) ? data.facts : [];
+      const spotIt = typeof data?.spotIt === "string" ? data.spotIt : "";
+      if (facts.length > 0 || spotIt) {
+        await onUpdateStop(currentStop.id, { facts, spotIt });
+      }
+    } catch (e) {
+      console.error("Failed to generate sights info:", e);
+    } finally {
+      setGenerating(false);
+    }
+  }, [generating, currentStop.id, currentStop.name, currentStop.address, onUpdateStop]);
+
+  // Auto-generate once for sight stops with no facts yet
+  useEffect(() => {
+    if (isSight && !hasFacts && !generating) {
+      generate();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentStop.id]);
 
   return (
     <div className="flex flex-col gap-4 px-4 pb-4">
@@ -42,14 +77,22 @@ export function NextStopView({
         </span>
       </div>
 
-      {hasLoc(currentStop) && (
+      <div className="flex flex-wrap gap-2">
+        {hasLoc(currentStop) && (
+          <button
+            onClick={() => setMapsStop(currentStop)}
+            className="rounded-full bg-secondary text-foreground py-2.5 px-4 text-xs flex items-center gap-2 border-0"
+          >
+            <MapPin className="h-4 w-4" /> Open in Maps
+          </button>
+        )}
         <button
-          onClick={() => setMapsStop(currentStop)}
-          className="rounded-full bg-secondary text-foreground py-2.5 px-4 text-xs flex items-center gap-2 self-start border-0"
+          onClick={() => onEditStop(currentStop)}
+          className="rounded-full bg-transparent py-2.5 px-4 text-[14px] flex items-center gap-1.5 border border-[#E8E2DA] text-[#9B95A3]"
         >
-          <MapPin className="h-4 w-4" /> Open in Maps
+          <Pencil className="h-3.5 w-3.5" /> Edit stop
         </button>
-      )}
+      </div>
 
       {/* Description */}
       <AnimatePresence mode="wait">
@@ -61,12 +104,79 @@ export function NextStopView({
           <p className="text-sm leading-relaxed">
             {kidMode ? currentStop.kidDescription || currentStop.notes : currentStop.notes}
           </p>
-          {currentStop.duration ? (
-            <div className="flex items-center gap-1.5 mt-2 text-xs text-muted-foreground">
-              <Clock className="h-3.5 w-3.5" />
-              <span>Spend ~{currentStop.duration} min here</span>
+          <div className="mt-2 flex flex-col gap-1">
+            {currentStop.duration ? (
+              <div className="flex items-center gap-1.5 text-[13px]" style={{ color: "#9B95A3" }}>
+                <Clock className="h-3.5 w-3.5" />
+                <span>Spend ~{currentStop.duration} min here</span>
+              </div>
+            ) : null}
+            {currentStop.startTime ? (
+              <div className="flex items-center gap-1.5 text-[13px]" style={{ color: "#9B95A3" }}>
+                <span>🕐</span>
+                <span>Approx start time: {currentStop.startTime}</span>
+              </div>
+            ) : null}
+            {currentStop.duration ? (
+              <div className="flex items-center gap-1.5 text-[13px]" style={{ color: "#9B95A3" }}>
+                <Timer className="h-3.5 w-3.5" />
+                <span>Duration: ~{currentStop.duration} min</span>
+              </div>
+            ) : null}
+          </div>
+
+          {/* Sights extras */}
+          {isSight && (
+            <div className="mt-4 flex flex-col gap-2">
+              {/* Quick facts card */}
+              <div className="rounded-xl p-3" style={{ background: "#F5F0EA" }}>
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-[12px] font-display">📖 Quick facts</p>
+                  {hasFacts && !generating && (
+                    <button
+                      onClick={generate}
+                      className="text-[11px] flex items-center gap-1 border-0 bg-transparent"
+                      style={{ color: "#9B95A3" }}
+                    >
+                      <RotateCw className="h-3 w-3" /> Regenerate
+                    </button>
+                  )}
+                </div>
+                {generating ? (
+                  <div className="flex flex-col gap-1.5">
+                    <div className="h-3 rounded-md skeleton-pulse" style={{ background: "#EDE8E0" }} />
+                    <div className="h-3 w-4/5 rounded-md skeleton-pulse" style={{ background: "#EDE8E0" }} />
+                  </div>
+                ) : hasFacts ? (
+                  <ul className="flex flex-col gap-1">
+                    {currentStop.facts!.map((f, i) => (
+                      <li key={i} className="text-[13px] leading-snug">{f}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <button
+                    onClick={generate}
+                    className="text-[12px] flex items-center gap-1 border-0 bg-transparent"
+                    style={{ color: "#9B95A3" }}
+                  >
+                    <Sparkles className="h-3 w-3" /> Generate info
+                  </button>
+                )}
+              </div>
+
+              {/* Spot the detail card */}
+              {(generating || currentStop.spotIt) && (
+                <div className="rounded-xl p-3" style={{ background: "#FFF3E8" }}>
+                  <p className="text-[12px] font-display mb-1.5">🎯 Spot the detail</p>
+                  {generating ? (
+                    <div className="h-3 w-3/4 rounded-md skeleton-pulse" style={{ background: "#EDE8E0" }} />
+                  ) : (
+                    <p className="text-[13px] leading-snug">{currentStop.spotIt}</p>
+                  )}
+                </div>
+              )}
             </div>
-          ) : null}
+          )}
         </motion.div>
       </AnimatePresence>
 
