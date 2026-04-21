@@ -54,6 +54,7 @@ export default function Index() {
               <p className="text-[10px] text-muted-foreground truncate">{a.city}</p>
             </div>
           </div>
+          <div className="w-[68px] shrink-0" aria-hidden="true" />
         </div>
 
         <ProgressBar progress={itinerary.progress} />
