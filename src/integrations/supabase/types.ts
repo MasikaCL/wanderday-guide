@@ -218,6 +218,17 @@ export type Database = {
     }
     Functions: {
       accept_adventure_invitation: { Args: { _token: string }; Returns: string }
+      get_invitation_by_token: {
+        Args: { _token: string }
+        Returns: {
+          accepted_at: string
+          adventure_city: string
+          adventure_id: string
+          adventure_name: string
+          email: string
+          role: Database["public"]["Enums"]["adventure_role"]
+        }[]
+      }
       has_adventure_access: {
         Args: {
           _adventure_id: string
