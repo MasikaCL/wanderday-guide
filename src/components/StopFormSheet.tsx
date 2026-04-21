@@ -16,6 +16,7 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
   const [name, setName] = useState(editStop?.name ?? "");
   const [category, setCategory] = useState<StopCategory>(editStop?.category ?? "sight");
   const [duration, setDuration] = useState(editStop?.duration?.toString() ?? "");
+  const [startTime, setStartTime] = useState(editStop?.startTime ?? "");
   const [notes, setNotes] = useState(editStop?.notes ?? "");
   const [address, setAddress] = useState(editStop?.address ?? "");
   const [tags, setTags] = useState<StopTag[]>((editStop?.tags as StopTag[]) ?? []);
@@ -38,6 +39,7 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
       notes: notes.trim() || undefined,
       address: address.trim() || undefined,
       tags, emoji: CATEGORY_EMOJI[category],
+      startTime: startTime.trim() || undefined,
     };
 
     if (isEditing && onUpdate && editStop) {
@@ -108,16 +110,27 @@ export function StopFormSheet({ open, onClose, onSubmit, editStop, onUpdate }: S
                 </div>
               </div>
 
-              <label className="block mb-4">
-                <span className="label-caps text-foreground/70">Duration (min)</span>
-                <input
-                  value={duration}
-                  onChange={(e) => setDuration(e.target.value.replace(/\D/g, ""))}
-                  placeholder="e.g. 30"
-                  inputMode="numeric"
-                  className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
-                />
-              </label>
+              <div className="grid grid-cols-2 gap-3 mb-4">
+                <label className="block">
+                  <span className="label-caps text-foreground/70">Approx start time</span>
+                  <input
+                    type="time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  />
+                </label>
+                <label className="block">
+                  <span className="label-caps text-foreground/70">Duration (min)</span>
+                  <input
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value.replace(/\D/g, ""))}
+                    placeholder="e.g. 30"
+                    inputMode="numeric"
+                    className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  />
+                </label>
+              </div>
 
               <label className="block mb-4">
                 <span className="label-caps text-foreground/70">Notes</span>
