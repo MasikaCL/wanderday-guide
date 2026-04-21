@@ -1,1 +1,4 @@
 project_id = "gxrsvtxadvpammwabzxv"
+
+[functions.generate-sights-info]
+verify_jwt = false
