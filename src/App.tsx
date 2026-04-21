@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Dashboard from "./pages/Dashboard";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import AcceptInvite from "./pages/AcceptInvite";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -20,6 +21,7 @@ const App = () => (
           <Route path="/" element={<Dashboard />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/adventure/:id" element={<Index />} />
+          <Route path="/invite/:token" element={<AcceptInvite />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

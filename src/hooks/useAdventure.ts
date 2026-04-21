@@ -57,7 +57,11 @@ export function useAdventure(adventureId: string | undefined) {
   }, [currentStopIndex, stops.length, setIndex]);
 
   const skip = arrive;
-  const goToStop = setIndex;
+  // Navigation only — does NOT advance the canonical "current" stop.
+  // Advancing happens exclusively via "I'm here" (arrive) or Skip.
+  const goToStop = useCallback((_i: number) => {
+    /* no-op: stops do not auto-advance from the list */
+  }, []);
 
   const setKidMode = useCallback(async (km: boolean) => {
     if (!adventureId) return;

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Map, List, Footprints, Plus } from "lucide-react";
+import { ArrowLeft, Map, List, Footprints, Plus, Share2 } from "lucide-react";
 import { useAuthSession } from "@/hooks/useAdventures";
 import { useAdventure } from "@/hooks/useAdventure";
 import { ProgressBar } from "@/components/ProgressBar";
@@ -10,6 +10,7 @@ import { StopList } from "@/components/StopList";
 import { StopFormSheet } from "@/components/StopFormSheet";
 import { RemoveConfirm } from "@/components/RemoveConfirm";
 import { SmartSuggestionBanner } from "@/components/SmartSuggestionBanner";
+import { ShareAdventureSheet } from "@/components/ShareAdventureSheet";
 
 import { Stop } from "@/data/types";
 
@@ -24,6 +25,7 @@ export default function Index() {
   const [addSheetOpen, setAddSheetOpen] = useState(false);
   const [editingStop, setEditingStop] = useState<Stop | null>(null);
   const [removingStop, setRemovingStop] = useState<Stop | null>(null);
+  const [shareOpen, setShareOpen] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth", { replace: true });
@@ -53,7 +55,14 @@ export default function Index() {
               <p className="text-[10px] text-muted-foreground truncate">{a.city}</p>
             </div>
           </div>
-          <div className="w-[68px] shrink-0" aria-hidden="true" />
+          <button
+            onClick={() => setShareOpen(true)}
+            className="rounded-full p-2 bg-card shadow-sticker flex items-center gap-1.5 pr-3 border-0"
+            aria-label="Share adventure"
+          >
+            <Share2 className="h-4 w-4" />
+            <span className="text-xs font-medium">Share</span>
+          </button>
         </div>
 
         <ProgressBar progress={itinerary.progress} />
@@ -118,7 +127,7 @@ export default function Index() {
                 currentIndex={itinerary.currentStopIndex}
                 completedStops={itinerary.completedStops}
                 kidMode={itinerary.kidMode}
-                onSelectStop={(i) => { itinerary.goToStop(i); setTab("next"); }}
+                onSelectStop={() => { /* tapping a stop no longer advances; the "Next" tab always shows the real current stop */ }}
                 onEditStop={(stop) => setEditingStop(stop)}
                 onRemoveStop={(stop) => setRemovingStop(stop)}
                 onReorder={itinerary.reorderStops}
@@ -162,6 +171,13 @@ export default function Index() {
           setRemovingStop(null);
         }}
         onCancel={() => setRemovingStop(null)}
+      />
+
+      <ShareAdventureSheet
+        open={shareOpen}
+        onClose={() => setShareOpen(false)}
+        adventureId={a.id}
+        adventureName={a.name}
       />
     </div>
   );
