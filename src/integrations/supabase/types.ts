@@ -14,6 +14,79 @@ export type Database = {
   }
   public: {
     Tables: {
+      adventure_collaborators: {
+        Row: {
+          adventure_id: string
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["adventure_role"]
+          user_id: string
+        }
+        Insert: {
+          adventure_id: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["adventure_role"]
+          user_id: string
+        }
+        Update: {
+          adventure_id?: string
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["adventure_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "adventure_collaborators_adventure_id_fkey"
+            columns: ["adventure_id"]
+            isOneToOne: false
+            referencedRelation: "adventures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      adventure_invitations: {
+        Row: {
+          accepted_at: string | null
+          adventure_id: string
+          created_at: string
+          email: string
+          id: string
+          invited_by: string
+          role: Database["public"]["Enums"]["adventure_role"]
+          token: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          adventure_id: string
+          created_at?: string
+          email: string
+          id?: string
+          invited_by: string
+          role?: Database["public"]["Enums"]["adventure_role"]
+          token?: string
+        }
+        Update: {
+          accepted_at?: string | null
+          adventure_id?: string
+          created_at?: string
+          email?: string
+          id?: string
+          invited_by?: string
+          role?: Database["public"]["Enums"]["adventure_role"]
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "adventure_invitations_adventure_id_fkey"
+            columns: ["adventure_id"]
+            isOneToOne: false
+            referencedRelation: "adventures"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       adventures: {
         Row: {
           city: string
@@ -144,10 +217,17 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      accept_adventure_invitation: { Args: { _token: string }; Returns: string }
+      has_adventure_access: {
+        Args: {
+          _adventure_id: string
+          _min_role?: Database["public"]["Enums"]["adventure_role"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      adventure_role: "owner" | "editor" | "viewer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -274,6 +354,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      adventure_role: ["owner", "editor", "viewer"],
+    },
   },
 } as const
