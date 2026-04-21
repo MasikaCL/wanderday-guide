@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Map, List, Sparkles, Footprints, Plus, MapPin } from "lucide-react";
+import { ArrowLeft, Map, List, Footprints, Plus, MapPin } from "lucide-react";
 import { RouteMap } from "@/components/RouteMap";
 import { useAuthSession } from "@/hooks/useAdventures";
 import { useAdventure } from "@/hooks/useAdventure";
@@ -54,14 +54,6 @@ export default function Index() {
               <p className="text-[10px] text-muted-foreground truncate">{a.city}</p>
             </div>
           </div>
-          <button
-            onClick={() => itinerary.setKidMode(!itinerary.kidMode)}
-            className={`rounded-full px-3 py-1.5 flex items-center gap-1 text-[10px] font-medium border-0 ${
-              itinerary.kidMode ? "bg-[#F5A7C7] text-foreground" : "bg-secondary text-foreground"
-            }`}
-          >
-            <Sparkles className="h-3 w-3" /> Kid mode
-          </button>
         </div>
 
         <ProgressBar progress={itinerary.progress} />
