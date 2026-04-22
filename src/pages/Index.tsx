@@ -26,6 +26,7 @@ export default function Index() {
   const [editingStop, setEditingStop] = useState<Stop | null>(null);
   const [removingStop, setRemovingStop] = useState<Stop | null>(null);
   const [shareOpen, setShareOpen] = useState(false);
+  const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth", { replace: true });
@@ -90,7 +91,7 @@ export default function Index() {
           <Map className="h-4 w-4" /> Next
         </button>
         <button
-          onClick={() => setTab("list")}
+          onClick={() => { setTab("list"); setPreviewIndex(null); }}
           className={`flex-1 rounded-full py-2.5 flex items-center justify-center gap-1.5 text-sm font-medium border-0 ${
             tab === "list" ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground"
           }`}
@@ -106,16 +107,18 @@ export default function Index() {
               initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.2 }}>
               <NextStopView
-                currentStop={itinerary.currentStop}
-                nextStop={itinerary.nextStop}
+                currentStop={previewIndex !== null ? itinerary.stops[previewIndex] : itinerary.currentStop}
+                nextStop={previewIndex !== null ? (itinerary.stops[previewIndex + 1] ?? null) : itinerary.nextStop}
                 kidMode={itinerary.kidMode}
-                isLastStop={itinerary.isLastStop}
-                onArrive={itinerary.arrive}
-                onSkip={itinerary.skip}
-                currentIndex={itinerary.currentStopIndex}
+                isLastStop={previewIndex !== null ? previewIndex === itinerary.stops.length - 1 : itinerary.isLastStop}
+                onArrive={() => { itinerary.arrive(); setPreviewIndex(null); }}
+                onSkip={() => { itinerary.skip(); setPreviewIndex(null); }}
+                currentIndex={previewIndex !== null ? previewIndex : itinerary.currentStopIndex}
                 totalStops={itinerary.totalStops}
                 onEditStop={(stop) => setEditingStop(stop)}
                 onUpdateStop={itinerary.editStop}
+                isPreview={previewIndex !== null && previewIndex !== itinerary.currentStopIndex}
+                onExitPreview={() => setPreviewIndex(null)}
               />
             </motion.div>
           ) : (
@@ -127,7 +130,7 @@ export default function Index() {
                 currentIndex={itinerary.currentStopIndex}
                 completedStops={itinerary.completedStops}
                 kidMode={itinerary.kidMode}
-                onSelectStop={() => { /* tapping a stop no longer advances; the "Next" tab always shows the real current stop */ }}
+                onSelectStop={(i) => { setPreviewIndex(i); setTab("next"); }}
                 onEditStop={(stop) => setEditingStop(stop)}
                 onRemoveStop={(stop) => setRemovingStop(stop)}
                 onReorder={itinerary.reorderStops}
