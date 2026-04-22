@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Stop } from "@/data/types";
 import { CategoryBadge } from "./CategoryBadge";
 import { OpenInMapsSheet } from "./OpenInMapsSheet";
-import { MapPin, Navigation, Clock, SkipForward, Check, Pencil, RotateCw, Sparkles, Timer } from "lucide-react";
+import { MapPin, Navigation, Clock, SkipForward, Check, Pencil, RotateCw, Sparkles, Timer, ArrowLeft, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 interface NextStopViewProps {
@@ -17,11 +17,13 @@ interface NextStopViewProps {
   totalStops: number;
   onEditStop: (stop: Stop) => void;
   onUpdateStop: (id: string, updates: Partial<Stop>) => Promise<void> | void;
+  isPreview?: boolean;
+  onExitPreview?: () => void;
 }
 
 export function NextStopView({
   currentStop, nextStop, kidMode, isLastStop, onArrive, onSkip, currentIndex, totalStops,
-  onEditStop, onUpdateStop,
+  onEditStop, onUpdateStop, isPreview, onExitPreview,
 }: NextStopViewProps) {
   const [mapsStop, setMapsStop] = useState<Stop | null>(null);
   const [generating, setGenerating] = useState(false);
@@ -59,13 +61,25 @@ export function NextStopView({
 
   return (
     <div className="flex flex-col gap-4 px-4 pb-4">
+      {isPreview && (
+        <div className="sticker bg-[#EDE8FF] p-3 flex items-center gap-2">
+          <Eye className="h-4 w-4 shrink-0" />
+          <p className="text-xs flex-1">Previewing this stop. The current stop won't change until you tap "I'm here" or "Skip".</p>
+          <button
+            onClick={onExitPreview}
+            className="rounded-full bg-card px-3 py-1.5 text-[11px] flex items-center gap-1 border-0"
+          >
+            <ArrowLeft className="h-3 w-3" /> Back to current
+          </button>
+        </div>
+      )}
       {/* Current location */}
       <div className="sticker p-4 flex items-center gap-3">
         <div className="flex h-14 w-14 items-center justify-center rounded-full text-2xl bg-[#F5A7C7]/40">
           {currentStop.emoji}
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-muted-foreground">You are here</p>
+          <p className="text-xs text-muted-foreground">{isPreview ? "Preview" : "You are here"}</p>
           <p className="font-display text-lg leading-tight truncate">{currentStop.name}</p>
           {currentStop.address && (
             <p className="text-xs text-muted-foreground truncate">{currentStop.address}</p>
