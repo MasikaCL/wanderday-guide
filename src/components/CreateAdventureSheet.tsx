@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
+import { toast } from "sonner";
 
 interface Props {
   open: boolean;
@@ -14,14 +15,18 @@ export function CreateAdventureSheet({ open, onClose, onCreate }: Props) {
   const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
   const [shape, setShape] = useState<"pink"|"green"|"yellow">("pink");
   const [busy, setBusy] = useState(false);
+  const [nameError, setNameError] = useState(false);
 
   const submit = async () => {
-    if (!name.trim() || !city.trim()) return;
+    if (!name.trim()) { setNameError(true); return; }
+    if (!city.trim()) return;
     setBusy(true);
     try {
       await onCreate({ name: name.trim(), city: city.trim(), date, shapeVariant: shape });
-      setName(""); setCity("");
+      setName(""); setCity(""); setNameError(false);
       onClose();
+    } catch (e: any) {
+      toast.error(e?.message ?? "Could not create adventure");
     } finally { setBusy(false); }
   };
 
@@ -50,9 +55,13 @@ export function CreateAdventureSheet({ open, onClose, onCreate }: Props) {
 
               <label className="block mb-4">
                 <span className="label-caps text-foreground/70">Trip name</span>
-                <input value={name} onChange={(e) => setName(e.target.value)}
+                <input value={name}
+                  onChange={(e) => { setName(e.target.value); if (nameError) setNameError(false); }}
                   placeholder="e.g. Rome with the kids"
-                  className="mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border-0 focus:outline-none focus:ring-2 focus:ring-primary/40" />
+                  className={`mt-1 w-full bg-secondary px-4 py-3 rounded-[20px] text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-primary/40 ${nameError ? "border-destructive" : "border-transparent"}`} />
+                {nameError && (
+                  <span className="block mt-1 text-xs text-destructive">Please add a name</span>
+                )}
               </label>
 
               <label className="block mb-4">
