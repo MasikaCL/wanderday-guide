@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import type { Adventure, Stop, StopCategory, StopTag } from "@/data/types";
+import type { Adventure, Folder, Stop, StopCategory, StopTag } from "@/data/types";
 import type { User, Session } from "@supabase/supabase-js";
 
 type AdvRow = {
@@ -22,6 +22,14 @@ type StopRow = {
   facts?: string[] | null;
   spot_it?: string | null;
 };
+
+type FolderRow = {
+  id: string; user_id: string; name: string; emoji: string; created_at: string;
+};
+
+const folderFromRow = (r: FolderRow): Folder => ({
+  id: r.id, name: r.name, emoji: r.emoji, createdAt: r.created_at,
+});
 
 const advFromRow = (r: AdvRow): Adventure => ({
   id: r.id, name: r.name, city: r.city, date: r.date ?? undefined,
