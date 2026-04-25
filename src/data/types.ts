@@ -63,6 +63,14 @@ export interface Adventure {
   currentStopIndex: number;
   kidMode: boolean;
   stops?: Stop[];
+  folderId?: string | null;
+}
+
+export interface Folder {
+  id: string;
+  name: string;
+  emoji: string;
+  createdAt: string;
 }
 
 export const SHAPE_VARIANTS = ["pink", "green", "yellow"] as const;

@@ -46,6 +46,33 @@ export type Database = {
           },
         ]
       }
+      adventure_folders: {
+        Row: {
+          created_at: string
+          emoji: string
+          id: string
+          name: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          name: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          emoji?: string
+          id?: string
+          name?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       adventure_invitations: {
         Row: {
           accepted_at: string | null
@@ -94,6 +121,7 @@ export type Database = {
           created_at: string
           current_stop_index: number
           date: string | null
+          folder_id: string | null
           id: string
           kid_mode: boolean
           name: string
@@ -107,6 +135,7 @@ export type Database = {
           created_at?: string
           current_stop_index?: number
           date?: string | null
+          folder_id?: string | null
           id?: string
           kid_mode?: boolean
           name: string
@@ -120,6 +149,7 @@ export type Database = {
           created_at?: string
           current_stop_index?: number
           date?: string | null
+          folder_id?: string | null
           id?: string
           kid_mode?: boolean
           name?: string
@@ -127,7 +157,15 @@ export type Database = {
           updated_at?: string
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "adventures_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "adventure_folders"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       stops: {
         Row: {
