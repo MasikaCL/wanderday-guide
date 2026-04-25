@@ -7,6 +7,7 @@ type AdvRow = {
   id: string; name: string; city: string; date: string | null;
   cover_emoji: string; shape_variant: string;
   current_stop_index: number; kid_mode: boolean;
+  folder_id: string | null;
 };
 
 type StopRow = {
@@ -27,6 +28,7 @@ const advFromRow = (r: AdvRow): Adventure => ({
   coverEmoji: r.cover_emoji,
   shapeVariant: (["pink","green","yellow"].includes(r.shape_variant) ? r.shape_variant : "pink") as Adventure["shapeVariant"],
   currentStopIndex: r.current_stop_index, kidMode: r.kid_mode,
+  folderId: r.folder_id ?? null,
 });
 
 export const stopFromRow = (r: StopRow): Stop => ({
@@ -63,12 +65,18 @@ export function useAuthSession() {
 
 export function useAdventures() {
   const [adventures, setAdventures] = useState<Adventure[]>([]);
+  const [folders, setFolders] = useState<Folder[]>([]);
   const [loading, setLoading] = useState(true);
 
   const refresh = useCallback(async () => {
-    const { data, error } = await supabase
-      .from("adventures").select("*").order("created_at", { ascending: true });
-    if (!error && data) setAdventures(data.map(advFromRow));
+    const [advRes, folderRes] = await Promise.all([
+      supabase.from("adventures").select("*").order("created_at", { ascending: true }),
+      supabase.from("adventure_folders").select("*").order("created_at", { ascending: true }),
+    ]);
+    if (!advRes.error && advRes.data) setAdventures((advRes.data as AdvRow[]).map(advFromRow));
+    if (!folderRes.error && folderRes.data) {
+      setFolders((folderRes.data as FolderRow[]).map(folderFromRow));
+    }
     setLoading(false);
   }, []);
 
@@ -77,14 +85,17 @@ export function useAdventures() {
   const create = useCallback(async (input: {
     name: string; city: string; date?: string; coverEmoji?: string;
     shapeVariant?: "pink" | "green" | "yellow"; seedVenice?: boolean;
+    folderId?: string | null;
   }) => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Not signed in");
     const { data, error } = await supabase.from("adventures").insert({
       user_id: user.id,
-      name: input.name, city: input.city, date: input.date ?? null,
+      name: input.name, city: input.city,
+      date: input.date && input.date.length > 0 ? input.date : null,
       cover_emoji: input.coverEmoji ?? "🗺️",
       shape_variant: input.shapeVariant ?? "pink",
+      folder_id: input.folderId ?? null,
     }).select().single();
     if (error || !data) throw error;
     await refresh();
@@ -105,5 +116,39 @@ export function useAdventures() {
     await refresh();
   }, [refresh]);
 
-  return { adventures, loading, refresh, create, remove, rename };
+  const moveToFolder = useCallback(async (adventureId: string, folderId: string | null) => {
+    await supabase.from("adventures").update({ folder_id: folderId }).eq("id", adventureId);
+    await refresh();
+  }, [refresh]);
+
+  const createFolder = useCallback(async (input: { name: string; emoji: string }) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not signed in");
+    const { data, error } = await supabase.from("adventure_folders").insert({
+      user_id: user.id, name: input.name, emoji: input.emoji,
+    }).select().single();
+    if (error || !data) throw error;
+    await refresh();
+    return data.id as string;
+  }, [refresh]);
+
+  const updateFolder = useCallback(async (id: string, patch: { name?: string; emoji?: string }) => {
+    await supabase.from("adventure_folders").update({
+      ...(patch.name !== undefined && { name: patch.name }),
+      ...(patch.emoji !== undefined && { emoji: patch.emoji }),
+    }).eq("id", id);
+    await refresh();
+  }, [refresh]);
+
+  const deleteFolder = useCallback(async (id: string) => {
+    // Adventures' folder_id will be SET NULL by FK on delete
+    await supabase.from("adventure_folders").delete().eq("id", id);
+    await refresh();
+  }, [refresh]);
+
+  return {
+    adventures, folders, loading, refresh,
+    create, remove, rename,
+    moveToFolder, createFolder, updateFolder, deleteFolder,
+  };
 }
